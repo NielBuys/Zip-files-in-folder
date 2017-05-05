@@ -1,0 +1,132 @@
+object mainfrm: Tmainfrm
+  Left = 515
+  Height = 504
+  Top = 147
+  Width = 627
+  Caption = 'mainfrm'
+  ClientHeight = 504
+  ClientWidth = 627
+  OnShow = FormShow
+  Position = poScreenCenter
+  LCLVersion = '1.6.4.0'
+  object DirectoryLbl: TLabel
+    Left = 112
+    Height = 15
+    Top = 26
+    Width = 93
+    Caption = 'Nothing selected.'
+    ParentColor = False
+  end
+  object listfiles2btn: TButton
+    Left = 24
+    Height = 25
+    Top = 19
+    Width = 75
+    Caption = 'List files'
+    OnClick = listfiles2btnClick
+    TabOrder = 0
+  end
+  object ToFolderBtn: TButton
+    Left = 24
+    Height = 25
+    Top = 400
+    Width = 96
+    Caption = 'Set To Folder'
+    OnClick = ToFolderBtnClick
+    TabOrder = 1
+  end
+  object DaysEdt: TEdit
+    Left = 528
+    Height = 23
+    Top = 19
+    Width = 80
+    TabOrder = 2
+    Text = '90'
+  end
+  object StringGrid1: TStringGrid
+    Left = 24
+    Height = 328
+    Top = 56
+    Width = 584
+    ColCount = 2
+    Columns = <    
+      item
+        MaxSize = 1000
+        Title.Caption = 'Filename'
+        Width = 450
+      end    
+      item
+        Title.Caption = 'Filedate'
+        Width = 100
+      end>
+    FixedCols = 0
+    RowCount = 1
+    TabOrder = 3
+  end
+  object ZipBtn: TButton
+    Left = 184
+    Height = 25
+    Top = 448
+    Width = 75
+    Caption = 'Zip Files'
+    OnClick = ZipBtnClick
+    TabOrder = 4
+  end
+  object ToFolderLbl: TLabel
+    Left = 136
+    Height = 15
+    Top = 408
+    Width = 85
+    Caption = 'No To folder yet'
+    ParentColor = False
+  end
+  object WriteINIBtn: TButton
+    Left = 24
+    Height = 25
+    Top = 448
+    Width = 75
+    Caption = 'Write INI'
+    OnClick = WriteINIBtnClick
+    TabOrder = 5
+  end
+  object ReadINIBtn: TButton
+    Left = 104
+    Height = 25
+    Top = 448
+    Width = 75
+    Caption = 'Read INI'
+    OnClick = ReadINIBtnClick
+    TabOrder = 6
+  end
+  object DeleteFilesBtn: TButton
+    Left = 264
+    Height = 25
+    Top = 448
+    Width = 75
+    Caption = 'Delete Files'
+    OnClick = DeleteFilesBtnClick
+    TabOrder = 7
+  end
+  object SelectDirectoryDialog1: TSelectDirectoryDialog
+    left = 192
+    top = 336
+  end
+  object SaveDialog1: TSaveDialog
+    DefaultExt = '.zip'
+    Filter = 'zip|*.zip'
+    left = 88
+    top = 336
+  end
+  object INISaveDialog1: TSaveDialog
+    DefaultExt = '.ini'
+    Filter = 'ini|*.ini'
+    left = 385
+    top = 336
+  end
+  object INIOpenDialog1: TOpenDialog
+    DefaultExt = '.ini'
+    Filter = 'INI|*.ini'
+    left = 496
+    top = 336
+  end
+end
