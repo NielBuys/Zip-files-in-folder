@@ -1,6 +1,6 @@
 # Zip-files-in-folder
 
-Small tool written for my office. It Compress the contents of a folder and then delete the files after compress. Its used to backup and delete auto generated files in a specific folder.<br>
+Small Open Source tool written for my office. It Compress the files (Recursive) in the selected folder older than the specified days, and then delete the files after the compress. The tool is used to backup and delete the older auto generated files in the specified folder.<br>
 <br>
 Tool was written in Lazarus.<br>
 <br>
