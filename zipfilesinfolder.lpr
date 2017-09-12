@@ -17,6 +17,7 @@ begin
   RequireDerivedFormResource:=True;
   Application.Initialize;
   Application.CreateForm(Tmainfrm, mainfrm);
+  mainfrm.startupcode;
   Application.Run;
 end.
 

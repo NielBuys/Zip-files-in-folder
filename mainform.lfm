@@ -6,7 +6,6 @@ object mainfrm: Tmainfrm
   Caption = 'Zip Files in Folder'
   ClientHeight = 521
   ClientWidth = 626
-  OnShow = FormShow
   Position = poScreenCenter
   LCLVersion = '1.6.4.0'
   object DirectoryLbl: TLabel
