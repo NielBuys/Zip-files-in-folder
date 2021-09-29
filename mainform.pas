@@ -15,6 +15,8 @@ type
   Tmainfrm = class(TForm)
     deleteemptyfolderscheck: TCheckBox;
     DeleteEmptyfoldersBtn: TButton;
+    deletefileswithruncheck: TCheckBox;
+    zipfileswithruncheck: TCheckBox;
     DeleteFilesBtn: TButton;
     INIOpenDialog1: TOpenDialog;
     DaysLabel: TLabel;
@@ -110,6 +112,8 @@ begin
              INI.WriteString('zipdetail','fromfolder',DirectoryLbl.Caption);
              INI.WriteString('zipdetail','tofolder',ToFolderLbl.Caption);
              INI.WriteString('zipdetail','filesolderthan',DaysEdt.Text);
+             INI.WriteString('zipdetail','zipfileswithrun',BooltoStr(zipfileswithruncheck.Checked));
+             INI.WriteString('zipdetail','deletefileswithrun',BooltoStr(deletefileswithruncheck.Checked));
              INI.WriteString('zipdetail','deleteemptyfolders',BooltoStr(deleteemptyfolderscheck.Checked));
           finally
              INI.free;
@@ -166,11 +170,11 @@ var
   I: Integer;
   AArchiveFileName :String;
 begin
-		  If progressbar = true then
-  		  begin
-             ProgressBar1.Max:=StringGrid1.Rowcount -1;
-             ProgressBar1.Position:= 0;
-          end;
+     If progressbar = true then
+     begin
+          ProgressBar1.Max:=StringGrid1.Rowcount -1;
+          ProgressBar1.Position:= 0;
+     end;
           OurZipper := TZipper.Create;
           try
              OurZipper.FileName := filename;
@@ -200,15 +204,17 @@ var
   INI: TINIFile;
 begin
      	LoadINI := false;
-		INI := TINIFile.Create(INIFilename);
+        INI := TINIFile.Create(INIFilename);
         try
-        	DirectoryLbl.Caption := INI.ReadString('zipdetail','fromfolder','');
-            ToFolderLbl.Caption := INI.ReadString('zipdetail','tofolder','');
-            DaysEdt.text:= INI.ReadString('zipdetail','filesolderthan','');
-            deleteemptyfolderscheck.checked := StrtoBool(INI.ReadString('zipdetail','deleteemptyfolders','0'));
+           DirectoryLbl.Caption := INI.ReadString('zipdetail','fromfolder','');
+           ToFolderLbl.Caption := INI.ReadString('zipdetail','tofolder','');
+           DaysEdt.text:= INI.ReadString('zipdetail','filesolderthan','');
+           zipfileswithruncheck.checked := StrtoBool(INI.ReadString('zipdetail','zipfileswithrun','0'));
+           deletefileswithruncheck.checked := StrtoBool(INI.ReadString('zipdetail','deletefileswithrun','0'));
+           deleteemptyfolderscheck.checked := StrtoBool(INI.ReadString('zipdetail','deleteemptyfolders','0'));
         finally
-            INI.free;
-            LoadINI := true;
+           INI.free;
+           LoadINI := true;
         end;
 end;
 
@@ -252,7 +258,7 @@ begin
         i2 := 1;
         for i := 0 to FoldersList.Count -1 do
         begin
-        	DirFiles := FindAllFiles(FoldersList[i], '*', true);
+            DirFiles := FindAllFiles(FoldersList[i], '*', true);
             countfiles := DirFiles.Count;
             if countfiles = 0 then
             begin
@@ -276,14 +282,14 @@ procedure tmainfrm.startupcode();
 var
   logdata: TStringList;
 begin
-		logdata := TStringList.Create;
- 		if fileexists(IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0))) + 'runlog.log') then
-     	begin
-     		logdata.LoadFromFile(IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0))) + 'runlog.log');
-     	end;
+     logdata := TStringList.Create;
+     if fileexists(IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0))) + 'runlog.log') then
+     begin
+        logdata.LoadFromFile(IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0))) + 'runlog.log');
+     end;
         If ParamCount > 0 then
         begin
-    		 if ParamStr(1) <> '' then
+             if ParamStr(1) <> '' then
              begin
                 If FileExists(ParamStr(1)) then
                 begin
@@ -300,21 +306,27 @@ begin
                         	getfilesinfolder(DirectoryLbl.Caption,DaysEdt.Text);
                         	if StringGrid1.Rowcount = 1 then
                         	begin
-                        		logdata.Add(datetimetostr(now) + ':0 files zipped');
-                                logdata.SaveToFile(IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0))) + 'runlog.log');
-                                Application.Terminate;
+                      		  logdata.Add(datetimetostr(now) + ':0 files zipped');
+                                  logdata.SaveToFile(IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0))) + 'runlog.log');
+                                  Application.Terminate;
                         	end
                         	else
                         	begin
-                				zipfiles(includeTrailingPathDelimiter(ToFolderLbl.Caption) + FormatDateTime('yyyymmddhhmm',now) + '.zip',False);
-                                Deleteselectedfiles(False);
-                                if deleteemptyfolderscheck.checked then
-                                begin
-                                	deleteemptydirectories(DirectoryLbl.Caption, False);
-                                end;
-                                logdata.Add(datetimetostr(now) + ':Process completed');
-                                logdata.SaveToFile(IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0))) + 'runlog.log');
-                                Application.Terminate;
+                                    if zipfileswithruncheck.checked then
+                                    begin
+                                      zipfiles(includeTrailingPathDelimiter(ToFolderLbl.Caption) + FormatDateTime('yyyymmddhhmm',now) + '.zip',False);
+                                    end;
+                                    if deletefileswithruncheck.checked then
+                                    begin
+                                      Deleteselectedfiles(False);
+                                    end;
+                                  if deleteemptyfolderscheck.checked then
+                                  begin
+                                       deleteemptydirectories(DirectoryLbl.Caption, False);
+                                  end;
+                                  logdata.Add(datetimetostr(now) + ':Process completed');
+                                  logdata.SaveToFile(IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0))) + 'runlog.log');
+                                  Application.Terminate;
                         	end;
                         except
                           on E: Exception do

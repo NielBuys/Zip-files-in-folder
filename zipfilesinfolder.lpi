@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="10"/>
+    <Version Value="11"/>
     <PathDelim Value="\"/>
     <General>
       <SessionStorage Value="InProjectDir"/>
@@ -18,7 +18,7 @@
       <UseVersionInfo Value="True"/>
       <MinorVersionNr Value="1"/>
       <BuildNr Value="1"/>
-      <StringTable CompanyName="ncomp.co.za" FileDescription="ncomp.co.za tool. It Compress the contents of a folder and then delete the files after compress. Its used to backup and delete auto generated files in a specific folder." ProductName="Zip files in Folder" ProductVersion=""/>
+      <StringTable CompanyName="ncomp.co.za" FileDescription="ncomp.co.za tool. It Compress the contents of a folder and then delete the files after compress. Its used to backup and delete auto generated files in a specific folder." ProductName="Zip files in Folder"/>
     </VersionInfo>
     <BuildModes Count="1">
       <Item1 Name="Default" Default="True"/>
@@ -27,9 +27,10 @@
       <Version Value="2"/>
     </PublishOptions>
     <RunParams>
-      <local>
-        <FormatVersion Value="1"/>
-      </local>
+      <FormatVersion Value="2"/>
+      <Modes Count="1">
+        <Mode0 Name="default"/>
+      </Modes>
     </RunParams>
     <RequiredPackages Count="1">
       <Item1>
