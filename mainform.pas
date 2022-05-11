@@ -6,16 +6,19 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  Grids, dateutils, zipper, LConvEncoding, IniFiles, LCLType, ComCtrls, LazUTF8;
+  Grids, dateutils, zipper, LConvEncoding, IniFiles, LCLType,
+  ComCtrls, Buttons, LazUTF8;
 
 type
 
   { Tmainfrm }
 
   Tmainfrm = class(TForm)
+    CancelRunBtn: TBitBtn;
     deleteemptyfolderscheck: TCheckBox;
     DeleteEmptyfoldersBtn: TButton;
     deletefileswithruncheck: TCheckBox;
+    StatusLbl: TLabel;
     zipfileswithruncheck: TCheckBox;
     DeleteFilesBtn: TButton;
     INIOpenDialog1: TOpenDialog;
@@ -34,6 +37,7 @@ type
     SaveDialog1: TSaveDialog;
     SelectDirectoryDialog1: TSelectDirectoryDialog;
     StringGrid1: TStringGrid;
+    procedure CancelRunBtnClick(Sender: TObject);
     procedure DeleteEmptyfoldersBtnClick(Sender: TObject);
     procedure DeleteFilesBtnClick(Sender: TObject);
     procedure ReadINIBtnClick(Sender: TObject);
@@ -44,7 +48,7 @@ type
   private
     function deleteemptydirectories(folderstr: string;progressbar:boolean): boolean;
     procedure Deleteselectedfiles(progressbar:boolean);
-    procedure getfilesinfolder(folderstr, daysstr: string);
+    procedure getfilesinfolder(folderstr, daysstr: string; progressbar:boolean);
     function LoadINI(INIFilename: string): boolean;
     procedure zipfiles(filename: string; progressbar:boolean);
     { private declarations }
@@ -55,6 +59,7 @@ type
 
 var
   mainfrm: Tmainfrm;
+  CancelRunBool: Boolean;
 
 implementation
 
@@ -77,7 +82,7 @@ begin
      if INIOpenDialog1.execute then
      begin
        LoadINI(INIOpenDialog1.filename);
-       getfilesinfolder(DirectoryLbl.Caption,DaysEdt.Text);
+       getfilesinfolder(DirectoryLbl.Caption,DaysEdt.Text, True);
      end;
 end;
 
@@ -99,6 +104,11 @@ procedure Tmainfrm.DeleteEmptyfoldersBtnClick(Sender: TObject);
 begin
      deleteemptydirectories(DirectoryLbl.Caption, True);
      showmessage('Process completed');
+end;
+
+procedure Tmainfrm.CancelRunBtnClick(Sender: TObject);
+begin
+     CancelRunBool := True;
 end;
 
 procedure Tmainfrm.WriteINIBtnClick(Sender: TObject);
@@ -134,19 +144,27 @@ procedure Tmainfrm.listfiles2btnClick(Sender: TObject);
 begin
   if SelectDirectoryDialog1.Execute then
   begin
-    getfilesinfolder(SelectDirectoryDialog1.filename,DaysEdt.Text);
+    getfilesinfolder(SelectDirectoryDialog1.filename,DaysEdt.Text, True);
   end;
 end;
 
 
-procedure Tmainfrm.getfilesinfolder(folderstr,daysstr: string);
+procedure Tmainfrm.getfilesinfolder(folderstr,daysstr: string; progressbar:boolean);
 var
   DirFiles: TStringList;
   fa, i, i2 : Longint;
 begin
      DirFiles := FindAllFiles(folderstr, '*', true);
      try
-     	StringGrid1.Clear;
+        If progressbar = true then
+        begin
+          ProgressBar1.Max:= DirFiles.Count -1;
+          ProgressBar1.Position:= 0;
+          CancelRunBool := False;
+          CancelRunBtn.Enabled := True;
+          StatusLbl.Caption := 'Status: Searching for valid files ...';
+        end;
+        StringGrid1.Clear;
         StringGrid1.Rowcount := 1;
         DirectoryLbl.Caption := folderstr;
         i2 := 1;
@@ -158,6 +176,20 @@ begin
                   StringGrid1.InsertRowWithValues(i2,[DirFiles[i],datetostr(FileDateToDateTime(fa))]);
                   i2 := i2 + 1;
              end;
+             If progressbar = true then
+             begin
+               ProgressBar1.Position:=i;
+               if CancelRunBool then
+               begin
+                    break;
+               end;
+               Application.ProcessMessages;
+             end;
+        end;
+        If progressbar = true then
+        begin
+          CancelRunBtn.Enabled := False;
+          StatusLbl.Caption := 'Status: Search for files has completed';
         end;
      finally
             DirFiles.Free;
@@ -169,11 +201,16 @@ var
   OurZipper: TZipper;
   I: Integer;
   AArchiveFileName :String;
+  BreakedRun: Boolean;
 begin
      If progressbar = true then
      begin
           ProgressBar1.Max:=StringGrid1.Rowcount -1;
           ProgressBar1.Position:= 0;
+          StatusLbl.Caption := 'Status: Adding Files to Compress ...';
+          CancelRunBool := False;
+          CancelRunBtn.Enabled := True;
+          BreakedRun := False;
      end;
           OurZipper := TZipper.Create;
           try
@@ -184,16 +221,34 @@ begin
                   AArchiveFileName:=SysToUTF8(AArchiveFileName);
                   AArchiveFileName:=UTF8ToCP866(AArchiveFileName);
                	  If fileexists(StringGrid1.Cells[0,I]) then
-        		  begin
+        	  begin
                   	OurZipper.Entries.AddFileEntry(StringGrid1.Cells[0,I],AArchiveFileName);
                   end;
                   If progressbar = true then
                   begin
                     ProgressBar1.Position:=I;
+                    if CancelRunBool then
+                    begin
+                        BreakedRun := True;
+                        break;
+                    end;
                     Application.ProcessMessages;
                   end;
              end;
-             OurZipper.ZipAllFiles;
+             If progressbar = true then
+             begin
+               CancelRunBtn.Enabled := False;
+               StatusLbl.Caption := 'Status: Compressing Added Files ...';
+               Application.ProcessMessages;
+             end;
+             if not BreakedRun then
+             begin
+               OurZipper.ZipAllFiles;
+             end;
+             If progressbar = true then
+             begin
+               StatusLbl.Caption := 'Status: Finished with the Compression';
+             end;
           finally
                  OurZipper.Free;
           end;
@@ -226,18 +281,30 @@ begin
      begin
          ProgressBar1.Max:=StringGrid1.Rowcount -1;
          ProgressBar1.Position:= 0;
+         CancelRunBool := False;
+         CancelRunBtn.Enabled := True;
+         StatusLbl.Caption := 'Status: Busy deleting files ...';
      end;
      for I := 1 to StringGrid1.Rowcount -1 do
      begin
      	If fileexists(StringGrid1.Cells[0,I]) then
         begin
-        	DeleteFile(StringGrid1.Cells[0,I]);
+          DeleteFile(StringGrid1.Cells[0,I]);
         end;
         If progressbar = true then
         begin
           ProgressBar1.Position:=I;
+          if CancelRunBool then
+          begin
+             break;
+          end;
           Application.ProcessMessages;
         end;
+     end;
+     If progressbar = true then
+     begin
+       CancelRunBtn.Enabled := False;
+       StatusLbl.Caption := 'Status: Deleting of files completed';
      end;
 end;
 
@@ -252,6 +319,9 @@ begin
      begin
          ProgressBar1.Max:=FoldersList.Count -1;
          ProgressBar1.Position:= 0;
+         CancelRunBool := False;
+         CancelRunBtn.Enabled := True;
+         StatusLbl.Caption := 'Status: Busy deleting empty folders ...';
      end;
      deleteemptydirectories := false;
      try
@@ -268,8 +338,17 @@ begin
             If progressbar = true then
             begin
               ProgressBar1.Position:=i;
+              if CancelRunBool then
+              begin
+                break;
+              end;
               Application.ProcessMessages;
             end;
+        end;
+        If progressbar = true then
+        begin
+          CancelRunBtn.Enabled := False;
+          StatusLbl.Caption := 'Status: Deleting of empty folders completed';
         end;
      finally
         FoldersList.Free;
@@ -303,7 +382,7 @@ begin
                     begin
                        	logdata.Add(datetimetostr(now) + ':INI load passed');
                         try
-                        	getfilesinfolder(DirectoryLbl.Caption,DaysEdt.Text);
+                        	getfilesinfolder(DirectoryLbl.Caption,DaysEdt.Text, False);
                         	if StringGrid1.Rowcount = 1 then
                         	begin
                       		  logdata.Add(datetimetostr(now) + ':0 files zipped');
