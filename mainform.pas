@@ -18,6 +18,7 @@ type
     deleteemptyfolderscheck: TCheckBox;
     DeleteEmptyfoldersBtn: TButton;
     deletefileswithruncheck: TCheckBox;
+    SearchMaskEdit: TEdit;
     StatusLbl: TLabel;
     zipfileswithruncheck: TCheckBox;
     DeleteFilesBtn: TButton;
@@ -120,6 +121,7 @@ begin
           INI := TINIFile.Create(INISaveDialog1.Filename);
           try
              INI.WriteString('zipdetail','fromfolder',DirectoryLbl.Caption);
+             INI.WriteString('zipdetail','searchmask',SearchMaskEdit.Text);
              INI.WriteString('zipdetail','tofolder',ToFolderLbl.Caption);
              INI.WriteString('zipdetail','filesolderthan',DaysEdt.Text);
              INI.WriteString('zipdetail','zipfileswithrun',BooltoStr(zipfileswithruncheck.Checked));
@@ -154,7 +156,7 @@ var
   DirFiles: TStringList;
   fa, i, i2 : Longint;
 begin
-     DirFiles := FindAllFiles(folderstr, '*', true);
+     DirFiles := FindAllFiles(folderstr, SearchMaskEdit.Text, true);
      try
         If progressbar = true then
         begin
@@ -262,6 +264,7 @@ begin
         INI := TINIFile.Create(INIFilename);
         try
            DirectoryLbl.Caption := INI.ReadString('zipdetail','fromfolder','');
+           SearchMaskEdit.Text := INI.ReadString('zipdetail','searchmask','*');
            ToFolderLbl.Caption := INI.ReadString('zipdetail','tofolder','');
            DaysEdt.text:= INI.ReadString('zipdetail','filesolderthan','');
            zipfileswithruncheck.checked := StrtoBool(INI.ReadString('zipdetail','zipfileswithrun','0'));
@@ -360,77 +363,95 @@ end;
 procedure tmainfrm.startupcode();
 var
   logdata: TStringList;
+  logfilepath: String;
+  i,i2: Integer;
 begin
-     logdata := TStringList.Create;
-     if fileexists(IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0))) + 'runlog.log') then
-     begin
-        logdata.LoadFromFile(IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0))) + 'runlog.log');
-     end;
+      logdata := TStringList.Create;
+      try
+        logfilepath := IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0))) + 'runlog.log';
+        if fileexists(logfilepath) then
+        begin
+          logdata.LoadFromFile(logfilepath);
+        end;
+        i := logdata.Count - 1;
+        i2 := 0;
+        while i >= 0 do
+        begin
+          if (i2 > 100) then
+          begin
+            logdata.Delete(i);
+          end;
+          dec(i);
+          inc(i2);
+        end;
         If ParamCount > 0 then
         begin
-             if ParamStr(1) <> '' then
-             begin
-                If FileExists(ParamStr(1)) then
-                begin
-                    If LoadINI(ParamStr(1)) = false then
-                    begin
-                       logdata.Add(datetimetostr(now) + ':INI load failed');
-                       logdata.SaveToFile(IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0))) + 'runlog.log');
-                       Application.Terminate;
-                    end
-                    else
-                    begin
-                       	logdata.Add(datetimetostr(now) + ':INI load passed');
-                        try
-                        	getfilesinfolder(DirectoryLbl.Caption,DaysEdt.Text, False);
-                        	if StringGrid1.Rowcount = 1 then
-                        	begin
-                      		  logdata.Add(datetimetostr(now) + ':0 files zipped');
-                                  logdata.SaveToFile(IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0))) + 'runlog.log');
-                                  Application.Terminate;
-                        	end
-                        	else
-                        	begin
-                                    if zipfileswithruncheck.checked then
-                                    begin
-                                      zipfiles(includeTrailingPathDelimiter(ToFolderLbl.Caption) + FormatDateTime('yyyymmddhhmm',now) + '.zip',False);
-                                    end;
-                                    if deletefileswithruncheck.checked then
-                                    begin
-                                      Deleteselectedfiles(False);
-                                    end;
-                                  if deleteemptyfolderscheck.checked then
+           if ParamStr(1) <> '' then
+           begin
+              If FileExists(ParamStr(1)) then
+              begin
+                  If LoadINI(ParamStr(1)) = false then
+                  begin
+                     logdata.Add(datetimetostr(now) + ':INI load failed');
+                     logdata.SaveToFile(logfilepath);
+                     Application.Terminate;
+                  end
+                  else
+                  begin
+                      logdata.Add(datetimetostr(now) + ':INI load passed');
+                      try
+                              getfilesinfolder(DirectoryLbl.Caption,DaysEdt.Text, False);
+                              if StringGrid1.Rowcount = 1 then
+                              begin
+                      	        logdata.Add(datetimetostr(now) + ':0 files zipped');
+                                logdata.SaveToFile(logfilepath);
+                                Application.Terminate;
+                              end
+                              else
+                              begin
+                                  if zipfileswithruncheck.checked then
                                   begin
-                                       deleteemptydirectories(DirectoryLbl.Caption, False);
+                                    zipfiles(includeTrailingPathDelimiter(ToFolderLbl.Caption) + FormatDateTime('yyyymmddhhmm',now) + '.zip',False);
                                   end;
-                                  logdata.Add(datetimetostr(now) + ':Process completed');
-                                  logdata.SaveToFile(IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0))) + 'runlog.log');
-                                  Application.Terminate;
-                        	end;
-                        except
-                          on E: Exception do
-                          begin
-                            logdata.Add(datetimetostr(now) + ':Process failed ->' + E.Message);
-                            logdata.SaveToFile(IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0))) + 'runlog.log');
-                            Application.Terminate;
-                          end;
+                                  if deletefileswithruncheck.checked then
+                                  begin
+                                    Deleteselectedfiles(False);
+                                  end;
+                                if deleteemptyfolderscheck.checked then
+                                begin
+                                     deleteemptydirectories(DirectoryLbl.Caption, False);
+                                end;
+                                logdata.Add(datetimetostr(now) + ':Process completed');
+                                logdata.SaveToFile(logfilepath);
+                                Application.Terminate;
+                              end;
+                      except
+                        on E: Exception do
+                        begin
+                          logdata.Add(datetimetostr(now) + ':Process failed ->' + E.Message);
+                          logdata.SaveToFile(logfilepath);
+                          Application.Terminate;
                         end;
-                    end;
-          		end
-                else
-                begin
-                    logdata.Add(datetimetostr(now) + ':INI file not found');
-               	    logdata.SaveToFile(IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0))) + 'runlog.log');
-                    Application.Terminate;
-                end;
-             end
-             else
-             begin
-                logdata.Add(datetimetostr(now) + ':INI file not found');
-            	logdata.SaveToFile(IncludeTrailingPathDelimiter(ExtractFilePath(ParamStr(0))) + 'runlog.log');
-                Application.Terminate;
-             end;
-          end;
+                      end;
+                  end;
+                      end
+              else
+              begin
+                  logdata.Add(datetimetostr(now) + ':INI file not found');
+                  logdata.SaveToFile(logfilepath);
+                  Application.Terminate;
+              end;
+           end
+           else
+           begin
+              logdata.Add(datetimetostr(now) + ':INI file not found');
+              logdata.SaveToFile(logfilepath);
+              Application.Terminate;
+           end;
+        end;
+      finally
+         logdata.free;
+      end;
 end;
 
 

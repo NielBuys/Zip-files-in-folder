@@ -1,7 +1,7 @@
 object mainfrm: Tmainfrm
-  Left = 607
+  Left = 681
   Height = 516
-  Top = 190
+  Top = 237
   Width = 626
   Caption = 'Zip Files in Folder'
   ClientHeight = 516
@@ -9,23 +9,25 @@ object mainfrm: Tmainfrm
   Position = poScreenCenter
   LCLVersion = '2.2.0.4'
   object DirectoryLbl: TLabel
-    Left = 112
-    Height = 17
-    Top = 24
-    Width = 118
+    Left = 144
+    Height = 36
+    Top = 8
+    Width = 284
+    AutoSize = False
     Caption = 'Nothing selected.'
+    WordWrap = True
   end
   object listfiles2btn: TButton
-    Left = 24
+    Left = 8
     Height = 25
-    Top = 19
+    Top = 8
     Width = 75
     Caption = 'List files'
     OnClick = listfiles2btnClick
     TabOrder = 0
   end
   object ToFolderBtn: TButton
-    Left = 24
+    Left = 8
     Height = 25
     Top = 369
     Width = 96
@@ -45,10 +47,10 @@ object mainfrm: Tmainfrm
     Text = '90'
   end
   object StringGrid1: TStringGrid
-    Left = 24
-    Height = 304
-    Top = 56
-    Width = 584
+    Left = 8
+    Height = 288
+    Top = 72
+    Width = 608
     Anchors = [akTop, akLeft, akRight, akBottom]
     ColCount = 2
     Columns = <    
@@ -66,7 +68,7 @@ object mainfrm: Tmainfrm
     TabOrder = 3
   end
   object ZipBtn: TButton
-    Left = 296
+    Left = 248
     Height = 25
     Top = 457
     Width = 75
@@ -76,7 +78,7 @@ object mainfrm: Tmainfrm
     TabOrder = 4
   end
   object ToFolderLbl: TLabel
-    Left = 136
+    Left = 120
     Height = 17
     Top = 375
     Width = 108
@@ -84,7 +86,7 @@ object mainfrm: Tmainfrm
     Caption = 'No To folder yet'
   end
   object WriteINIBtn: TButton
-    Left = 24
+    Left = 8
     Height = 25
     Top = 457
     Width = 75
@@ -94,7 +96,7 @@ object mainfrm: Tmainfrm
     TabOrder = 5
   end
   object ReadINIBtn: TButton
-    Left = 104
+    Left = 88
     Height = 25
     Top = 457
     Width = 75
@@ -104,10 +106,10 @@ object mainfrm: Tmainfrm
     TabOrder = 6
   end
   object DeleteFilesBtn: TButton
-    Left = 376
+    Left = 328
     Height = 25
     Top = 457
-    Width = 75
+    Width = 91
     Anchors = [akRight, akBottom]
     Caption = 'Delete Files'
     OnClick = DeleteFilesBtnClick
@@ -122,10 +124,10 @@ object mainfrm: Tmainfrm
     Caption = 'older than:'
   end
   object DeleteEmptyfoldersBtn: TButton
-    Left = 456
+    Left = 424
     Height = 25
     Top = 457
-    Width = 120
+    Width = 160
     Anchors = [akRight, akBottom]
     Caption = 'Delete Empty folders'
     OnClick = DeleteEmptyfoldersBtnClick
@@ -133,9 +135,9 @@ object mainfrm: Tmainfrm
     TabOrder = 8
   end
   object deleteemptyfolderscheck: TCheckBox
-    Left = 24
+    Left = 8
     Height = 23
-    Top = 429
+    Top = 432
     Width = 225
     Anchors = [akLeft, akBottom]
     Caption = 'Delete empty folders with run'
@@ -150,15 +152,15 @@ object mainfrm: Tmainfrm
     Caption = 'Days'
   end
   object ProgressBar1: TProgressBar
-    Left = 24
+    Left = 8
     Height = 20
     Top = 486
-    Width = 584
+    Width = 600
     Anchors = [akLeft, akRight, akBottom]
     TabOrder = 10
   end
   object deletefileswithruncheck: TCheckBox
-    Left = 24
+    Left = 8
     Height = 23
     Top = 413
     Width = 158
@@ -167,9 +169,9 @@ object mainfrm: Tmainfrm
     TabOrder = 11
   end
   object zipfileswithruncheck: TCheckBox
-    Left = 24
+    Left = 8
     Height = 23
-    Top = 397
+    Top = 394
     Width = 135
     Anchors = [akLeft, akBottom]
     Caption = 'Zip files with run'
@@ -196,6 +198,17 @@ object mainfrm: Tmainfrm
     Top = 437
     Width = 47
     Caption = 'Status:'
+  end
+  object SearchMaskEdit: TEdit
+    Left = 8
+    Height = 33
+    Hint = 'Search Mask Example "*.txt;*.csv"'
+    Top = 39
+    Width = 120
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 14
+    Text = '*'
   end
   object SelectDirectoryDialog1: TSelectDirectoryDialog
     Left = 192

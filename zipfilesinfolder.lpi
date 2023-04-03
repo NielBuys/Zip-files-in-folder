@@ -19,8 +19,8 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <MinorVersionNr Value="1"/>
-      <BuildNr Value="3"/>
-      <StringTable CompanyName="ncomp.co.za" FileDescription="ncomp.co.za tool. It Compress the contents of a folder and then delete the files after compress. Its used to backup and delete auto generated files in a specific folder." ProductName="Zip files in Folder"/>
+      <BuildNr Value="4"/>
+      <StringTable CompanyName="ncomp.co.za" FileDescription="Zip Files in Folder ncomp.co.za tool" ProductName="Zip Files in Folder"/>
     </VersionInfo>
     <BuildModes Count="1">
       <Item1 Name="Default" Default="True"/>
