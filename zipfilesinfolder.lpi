@@ -19,8 +19,8 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <MinorVersionNr Value="1"/>
-      <BuildNr Value="4"/>
-      <StringTable CompanyName="ncomp.co.za" FileDescription="Zip Files in Folder ncomp.co.za tool" ProductName="Zip Files in Folder"/>
+      <BuildNr Value="5"/>
+      <StringTable CompanyName="ncomp.co.za" FileDescription="Zip Files in Folder, ncomp.co.za tool" ProductName="Zip Files in Folder"/>
     </VersionInfo>
     <BuildModes Count="1">
       <Item1 Name="Default" Default="True"/>

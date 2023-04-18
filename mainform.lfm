@@ -7,7 +7,7 @@ object mainfrm: Tmainfrm
   ClientHeight = 516
   ClientWidth = 626
   Position = poScreenCenter
-  LCLVersion = '2.2.0.4'
+  LCLVersion = '2.2.4.0'
   object DirectoryLbl: TLabel
     Left = 144
     Height = 36
@@ -15,6 +15,7 @@ object mainfrm: Tmainfrm
     Width = 284
     AutoSize = False
     Caption = 'Nothing selected.'
+    ParentColor = False
     WordWrap = True
   end
   object listfiles2btn: TButton
@@ -38,7 +39,7 @@ object mainfrm: Tmainfrm
   end
   object DaysEdt: TEdit
     Left = 512
-    Height = 33
+    Height = 23
     Top = 19
     Width = 56
     Anchors = [akTop, akRight]
@@ -79,11 +80,12 @@ object mainfrm: Tmainfrm
   end
   object ToFolderLbl: TLabel
     Left = 120
-    Height = 17
-    Top = 375
-    Width = 108
+    Height = 15
+    Top = 377
+    Width = 84
     Anchors = [akLeft, akBottom]
     Caption = 'No To folder yet'
+    ParentColor = False
   end
   object WriteINIBtn: TButton
     Left = 8
@@ -116,12 +118,13 @@ object mainfrm: Tmainfrm
     TabOrder = 7
   end
   object DaysLabel: TLabel
-    Left = 432
-    Height = 17
+    Left = 448
+    Height = 15
     Top = 24
-    Width = 73
+    Width = 57
     Anchors = [akTop, akRight]
     Caption = 'older than:'
+    ParentColor = False
   end
   object DeleteEmptyfoldersBtn: TButton
     Left = 424
@@ -136,20 +139,21 @@ object mainfrm: Tmainfrm
   end
   object deleteemptyfolderscheck: TCheckBox
     Left = 8
-    Height = 23
-    Top = 432
-    Width = 225
+    Height = 19
+    Top = 436
+    Width = 176
     Anchors = [akLeft, akBottom]
     Caption = 'Delete empty folders with run'
     TabOrder = 9
   end
   object DaysLbl: TLabel
-    Left = 570
-    Height = 17
+    Left = 576
+    Height = 15
     Top = 24
-    Width = 31
+    Width = 25
     Anchors = [akTop, akRight]
     Caption = 'Days'
+    ParentColor = False
   end
   object ProgressBar1: TProgressBar
     Left = 8
@@ -161,18 +165,18 @@ object mainfrm: Tmainfrm
   end
   object deletefileswithruncheck: TCheckBox
     Left = 8
-    Height = 23
-    Top = 413
-    Width = 158
+    Height = 19
+    Top = 417
+    Width = 124
     Anchors = [akLeft, akBottom]
     Caption = 'Delete files with run'
     TabOrder = 11
   end
   object zipfileswithruncheck: TCheckBox
     Left = 8
-    Height = 23
-    Top = 394
-    Width = 135
+    Height = 19
+    Top = 398
+    Width = 108
     Anchors = [akLeft, akBottom]
     Caption = 'Zip files with run'
     TabOrder = 12
@@ -194,14 +198,15 @@ object mainfrm: Tmainfrm
   end
   object StatusLbl: TLabel
     Left = 296
-    Height = 17
+    Height = 15
     Top = 437
-    Width = 47
+    Width = 35
     Caption = 'Status:'
+    ParentColor = False
   end
   object SearchMaskEdit: TEdit
     Left = 8
-    Height = 33
+    Height = 23
     Hint = 'Search Mask Example "*.txt;*.csv"'
     Top = 39
     Width = 120

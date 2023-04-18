@@ -363,7 +363,7 @@ end;
 procedure tmainfrm.startupcode();
 var
   logdata: TStringList;
-  logfilepath: String;
+  logfilepath, inifilename: String;
   i,i2: Integer;
 begin
       logdata := TStringList.Create;
@@ -390,20 +390,21 @@ begin
            begin
               If FileExists(ParamStr(1)) then
               begin
+                  inifilename := ExtractFileName(ParamStr(1));
                   If LoadINI(ParamStr(1)) = false then
                   begin
-                     logdata.Add(datetimetostr(now) + ':INI load failed');
+                     logdata.Add(datetimetostr(now) + ':' + inifilename + ' failed to load');
                      logdata.SaveToFile(logfilepath);
                      Application.Terminate;
                   end
                   else
                   begin
-                      logdata.Add(datetimetostr(now) + ':INI load passed');
+                      logdata.Add(datetimetostr(now) + ':' + inifilename + ' successfully loaded');
                       try
                               getfilesinfolder(DirectoryLbl.Caption,DaysEdt.Text, False);
                               if StringGrid1.Rowcount = 1 then
                               begin
-                      	        logdata.Add(datetimetostr(now) + ':0 files zipped');
+                      	        logdata.Add(datetimetostr(now) + ':' + inifilename + ' no files to zip');
                                 logdata.SaveToFile(logfilepath);
                                 Application.Terminate;
                               end
@@ -421,23 +422,23 @@ begin
                                 begin
                                      deleteemptydirectories(DirectoryLbl.Caption, False);
                                 end;
-                                logdata.Add(datetimetostr(now) + ':Process completed');
+                                logdata.Add(datetimetostr(now) + ':' + inifilename + ' Process completed');
                                 logdata.SaveToFile(logfilepath);
                                 Application.Terminate;
                               end;
                       except
                         on E: Exception do
                         begin
-                          logdata.Add(datetimetostr(now) + ':Process failed ->' + E.Message);
+                          logdata.Add(datetimetostr(now) + ':' + inifilename + ' Process failed ->' + E.Message);
                           logdata.SaveToFile(logfilepath);
                           Application.Terminate;
                         end;
                       end;
                   end;
-                      end
+              end
               else
               begin
-                  logdata.Add(datetimetostr(now) + ':INI file not found');
+                  logdata.Add(datetimetostr(now) + ':(' + ParamStr(1) + ') file not found');
                   logdata.SaveToFile(logfilepath);
                   Application.Terminate;
               end;
