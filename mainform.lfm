@@ -1,219 +1,435 @@
 object mainfrm: Tmainfrm
-  Left = 681
-  Height = 516
-  Top = 237
-  Width = 626
+  Left = 2417
+  Height = 661
+  Top = 150
+  Width = 733
   Caption = 'Zip Files in Folder'
-  ClientHeight = 516
-  ClientWidth = 626
+  ClientHeight = 661
+  ClientWidth = 733
   Position = poScreenCenter
-  LCLVersion = '2.2.4.0'
-  object DirectoryLbl: TLabel
-    Left = 144
-    Height = 36
-    Top = 8
-    Width = 284
-    AutoSize = False
-    Caption = 'Nothing selected.'
-    ParentColor = False
-    WordWrap = True
-  end
-  object listfiles2btn: TButton
-    Left = 8
-    Height = 25
-    Top = 8
-    Width = 75
-    Caption = 'List files'
-    OnClick = listfiles2btnClick
-    TabOrder = 0
-  end
-  object ToFolderBtn: TButton
-    Left = 8
-    Height = 25
-    Top = 369
-    Width = 96
-    Anchors = [akLeft, akBottom]
-    Caption = 'Set To Folder'
-    OnClick = ToFolderBtnClick
-    TabOrder = 1
-  end
-  object DaysEdt: TEdit
-    Left = 512
-    Height = 23
-    Top = 19
-    Width = 56
-    Anchors = [akTop, akRight]
-    NumbersOnly = True
-    TabOrder = 2
-    Text = '90'
-  end
-  object StringGrid1: TStringGrid
-    Left = 8
-    Height = 288
-    Top = 72
-    Width = 608
-    Anchors = [akTop, akLeft, akRight, akBottom]
-    ColCount = 2
-    Columns = <    
-      item
-        MaxSize = 1000
-        Title.Caption = 'Filename'
-        Width = 450
-      end    
-      item
-        Title.Caption = 'Filedate'
-        Width = 100
-      end>
-    FixedCols = 0
-    RowCount = 1
-    TabOrder = 3
-  end
-  object ZipBtn: TButton
-    Left = 248
-    Height = 25
-    Top = 457
-    Width = 75
-    Anchors = [akRight, akBottom]
-    Caption = 'Zip Files'
-    OnClick = ZipBtnClick
-    TabOrder = 4
-  end
-  object ToFolderLbl: TLabel
-    Left = 120
-    Height = 15
-    Top = 377
-    Width = 84
-    Anchors = [akLeft, akBottom]
-    Caption = 'No To folder yet'
-    ParentColor = False
-  end
-  object WriteINIBtn: TButton
-    Left = 8
-    Height = 25
-    Top = 457
-    Width = 75
-    Anchors = [akLeft, akBottom]
-    Caption = 'Write INI'
-    OnClick = WriteINIBtnClick
-    TabOrder = 5
-  end
-  object ReadINIBtn: TButton
-    Left = 88
-    Height = 25
-    Top = 457
-    Width = 75
-    Anchors = [akLeft, akBottom]
-    Caption = 'Read INI'
-    OnClick = ReadINIBtnClick
-    TabOrder = 6
-  end
-  object DeleteFilesBtn: TButton
-    Left = 328
-    Height = 25
-    Top = 457
-    Width = 91
-    Anchors = [akRight, akBottom]
-    Caption = 'Delete Files'
-    OnClick = DeleteFilesBtnClick
-    TabOrder = 7
-  end
-  object DaysLabel: TLabel
-    Left = 448
-    Height = 15
-    Top = 24
-    Width = 57
-    Anchors = [akTop, akRight]
-    Caption = 'older than:'
-    ParentColor = False
-  end
-  object DeleteEmptyfoldersBtn: TButton
-    Left = 424
-    Height = 25
-    Top = 457
-    Width = 160
-    Anchors = [akRight, akBottom]
-    Caption = 'Delete Empty folders'
-    OnClick = DeleteEmptyfoldersBtnClick
-    ParentFont = False
-    TabOrder = 8
-  end
-  object deleteemptyfolderscheck: TCheckBox
-    Left = 8
-    Height = 19
-    Top = 436
-    Width = 176
-    Anchors = [akLeft, akBottom]
-    Caption = 'Delete empty folders with run'
-    TabOrder = 9
-  end
-  object DaysLbl: TLabel
-    Left = 576
-    Height = 15
-    Top = 24
-    Width = 25
-    Anchors = [akTop, akRight]
-    Caption = 'Days'
-    ParentColor = False
-  end
+  LCLVersion = '2.2.6.0'
   object ProgressBar1: TProgressBar
     Left = 8
     Height = 20
-    Top = 486
-    Width = 600
+    Top = 631
+    Width = 710
     Anchors = [akLeft, akRight, akBottom]
-    TabOrder = 10
+    TabOrder = 0
   end
-  object deletefileswithruncheck: TCheckBox
+  object PageControl1: TPageControl
     Left = 8
-    Height = 19
-    Top = 417
-    Width = 124
-    Anchors = [akLeft, akBottom]
-    Caption = 'Delete files with run'
-    TabOrder = 11
-  end
-  object zipfileswithruncheck: TCheckBox
-    Left = 8
-    Height = 19
-    Top = 398
-    Width = 108
-    Anchors = [akLeft, akBottom]
-    Caption = 'Zip files with run'
-    TabOrder = 12
-  end
-  object CancelRunBtn: TBitBtn
-    Left = 583
-    Height = 25
-    Hint = 'Cancel run'
-    Top = 457
-    Width = 25
-    Cancel = True
-    Enabled = False
-    Kind = bkCancel
-    ModalResult = 2
-    OnClick = CancelRunBtnClick
-    ParentShowHint = False
-    ShowHint = True
-    TabOrder = 13
-  end
-  object StatusLbl: TLabel
-    Left = 296
-    Height = 15
-    Top = 437
-    Width = 35
-    Caption = 'Status:'
-    ParentColor = False
-  end
-  object SearchMaskEdit: TEdit
-    Left = 8
-    Height = 23
-    Hint = 'Search Mask Example "*.txt;*.csv"'
-    Top = 39
-    Width = 120
-    ParentShowHint = False
-    ShowHint = True
-    TabOrder = 14
-    Text = '*'
+    Height = 616
+    Top = 8
+    Width = 715
+    ActivePage = CopyFilesSheet
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    TabIndex = 1
+    TabOrder = 1
+    object ZipFilesinFolderSheet: TTabSheet
+      Caption = 'Zip files in folder'
+      ClientHeight = 585
+      ClientWidth = 705
+      object SearchMaskEdit: TEdit
+        Left = 0
+        Height = 25
+        Hint = 'Search Mask Example "*.txt;*.csv"'
+        Top = 8
+        Width = 152
+        AutoSize = False
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 0
+        Text = '*'
+      end
+      object DaysLabel: TLabel
+        Left = 424
+        Height = 17
+        Top = 13
+        Width = 73
+        Caption = 'older than:'
+        ParentColor = False
+      end
+      object DaysEdt: TEdit
+        Left = 504
+        Height = 25
+        Hint = 'Older Than {x} Days. Switch of with 0.'
+        Top = 8
+        Width = 56
+        AutoSize = False
+        NumbersOnly = True
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 1
+        Text = '90'
+      end
+      object DaysLbl: TLabel
+        Left = 560
+        Height = 17
+        Top = 13
+        Width = 31
+        Caption = 'Days'
+        ParentColor = False
+      end
+      object listfiles2btn: TButton
+        Left = 622
+        Height = 25
+        Top = 8
+        Width = 75
+        Caption = 'List files'
+        OnClick = listfiles2btnClick
+        TabOrder = 2
+      end
+      object DirectoryLbl: TLabel
+        Left = 0
+        Height = 20
+        Top = 40
+        Width = 697
+        Anchors = [akTop, akLeft, akRight]
+        AutoSize = False
+        Caption = 'Nothing selected.'
+        ParentColor = False
+        WordWrap = True
+      end
+      object StringGrid1: TStringGrid
+        Left = 0
+        Height = 381
+        Top = 64
+        Width = 697
+        Anchors = [akTop, akLeft, akRight, akBottom]
+        ColCount = 2
+        Columns = <        
+          item
+            MaxSize = 1000
+            Title.Caption = 'Filename'
+            Width = 450
+          end        
+          item
+            Title.Caption = 'Filedate'
+            Width = 130
+          end>
+        FixedCols = 0
+        RowCount = 1
+        TabOrder = 3
+      end
+      object ToFolderBtn: TButton
+        Left = 0
+        Height = 25
+        Top = 445
+        Width = 96
+        Anchors = [akLeft, akBottom]
+        Caption = 'Set To Folder'
+        OnClick = ToFolderBtnClick
+        TabOrder = 4
+      end
+      object zipfileswithruncheck: TCheckBox
+        Left = 0
+        Height = 23
+        Top = 477
+        Width = 135
+        Anchors = [akLeft, akBottom]
+        Caption = 'Zip files with run'
+        TabOrder = 5
+      end
+      object deletefileswithruncheck: TCheckBox
+        Left = 0
+        Height = 23
+        Top = 501
+        Width = 158
+        Anchors = [akLeft, akBottom]
+        Caption = 'Delete files with run'
+        TabOrder = 6
+      end
+      object deleteemptyfolderscheck: TCheckBox
+        Left = 0
+        Height = 23
+        Top = 525
+        Width = 225
+        Anchors = [akLeft, akBottom]
+        Caption = 'Delete empty folders with run'
+        TabOrder = 7
+      end
+      object WriteINIBtn: TButton
+        Left = 0
+        Height = 25
+        Top = 557
+        Width = 75
+        Anchors = [akLeft, akBottom]
+        Caption = 'Write INI'
+        OnClick = WriteINIBtnClick
+        TabOrder = 8
+      end
+      object ReadINIBtn: TButton
+        Left = 80
+        Height = 25
+        Top = 557
+        Width = 75
+        Anchors = [akLeft, akBottom]
+        Caption = 'Read INI'
+        OnClick = ReadINIBtnClick
+        TabOrder = 9
+      end
+      object ZipBtn: TButton
+        Left = 328
+        Height = 25
+        Top = 557
+        Width = 75
+        Anchors = [akRight, akBottom]
+        Caption = 'Zip Files'
+        OnClick = ZipBtnClick
+        TabOrder = 10
+      end
+      object DeleteFilesBtn: TButton
+        Left = 408
+        Height = 25
+        Top = 557
+        Width = 91
+        Anchors = [akRight, akBottom]
+        Caption = 'Delete Files'
+        OnClick = DeleteFilesBtnClick
+        TabOrder = 11
+      end
+      object DeleteEmptyfoldersBtn: TButton
+        Left = 504
+        Height = 25
+        Top = 557
+        Width = 160
+        Anchors = [akRight, akBottom]
+        Caption = 'Delete Empty folders'
+        OnClick = DeleteEmptyfoldersBtnClick
+        ParentFont = False
+        TabOrder = 12
+      end
+      object StatusLbl: TLabel
+        Left = 646
+        Height = 17
+        Top = 531
+        Width = 47
+        Anchors = [akRight, akBottom]
+        Caption = 'Status:'
+        ParentColor = False
+      end
+      object ToFolderLbl: TLabel
+        Left = 112
+        Height = 17
+        Top = 453
+        Width = 108
+        Anchors = [akLeft, akBottom]
+        Caption = 'No To folder yet'
+        ParentColor = False
+      end
+      object CancelRunBtn: TBitBtn
+        Left = 668
+        Height = 25
+        Top = 557
+        Width = 25
+        Anchors = [akRight, akBottom]
+        Enabled = False
+        Kind = bkCancel
+        ModalResult = 2
+        OnClick = CancelRunBtnClick
+        TabOrder = 13
+      end
+      object IncludeSubFolderCheck: TCheckBox
+        Left = 160
+        Height = 23
+        Top = 10
+        Width = 156
+        Caption = 'Include Sub Folders'
+        Checked = True
+        State = cbChecked
+        TabOrder = 14
+      end
+    end
+    object CopyFilesSheet: TTabSheet
+      Caption = 'Copy File'
+      ClientHeight = 585
+      ClientWidth = 705
+      object CopyFilesSearchMaskEdit: TEdit
+        Left = 8
+        Height = 25
+        Top = 8
+        Width = 112
+        AutoSize = False
+        TabOrder = 0
+        Text = '*'
+      end
+      object CopyFileIncludeSubFolderCheck: TCheckBox
+        Left = 128
+        Height = 23
+        Top = 8
+        Width = 156
+        Caption = 'Include Sub Folders'
+        Checked = True
+        State = cbChecked
+        TabOrder = 1
+      end
+      object CopyFileStringGrid: TStringGrid
+        Left = 2
+        Height = 381
+        Top = 64
+        Width = 697
+        Anchors = [akTop, akLeft, akRight, akBottom]
+        ColCount = 3
+        Columns = <        
+          item
+            MaxSize = 1000
+            Title.Caption = 'Filename'
+            Width = 450
+          end        
+          item
+            Title.Caption = 'Filedate'
+            Width = 130
+          end        
+          item
+            Title.Caption = 'Folder'
+            Width = 450
+          end>
+        FixedCols = 0
+        RowCount = 1
+        TabOrder = 3
+      end
+      object CopyFileDirectoryLbl: TLabel
+        Left = 0
+        Height = 20
+        Top = 40
+        Width = 697
+        Anchors = [akTop, akLeft, akRight]
+        AutoSize = False
+        Caption = 'Nothing selected.'
+        ParentColor = False
+        WordWrap = True
+      end
+      object OnlyNewestFileCheck: TCheckBox
+        Left = 296
+        Height = 23
+        Top = 8
+        Width = 197
+        Caption = 'Only Newest File in folder'
+        TabOrder = 2
+      end
+      object CopyFileslistfilesbtn: TButton
+        Left = 624
+        Height = 25
+        Top = 8
+        Width = 75
+        Caption = 'List files'
+        OnClick = CopyFileslistfilesbtnClick
+        TabOrder = 4
+      end
+      object CopyFileStatusLbl: TLabel
+        Left = 652
+        Height = 17
+        Top = 536
+        Width = 47
+        Anchors = [akRight, akBottom]
+        Caption = 'Status:'
+        ParentColor = False
+      end
+      object CopyFileCancelRunBtn: TBitBtn
+        Left = 674
+        Height = 25
+        Top = 557
+        Width = 25
+        Anchors = [akRight, akBottom]
+        Enabled = False
+        Kind = bkCancel
+        ModalResult = 2
+        OnClick = CancelRunBtnClick
+        TabOrder = 5
+      end
+      object CopyFileWriteINIBtn: TButton
+        Left = 0
+        Height = 25
+        Top = 557
+        Width = 75
+        Anchors = [akLeft, akBottom]
+        Caption = 'Write INI'
+        OnClick = CopyFileWriteINIBtnClick
+        TabOrder = 6
+      end
+      object CopyFileReadINIBtn: TButton
+        Left = 80
+        Height = 25
+        Top = 557
+        Width = 75
+        Anchors = [akLeft, akBottom]
+        Caption = 'Read INI'
+        OnClick = CopyFileReadINIBtnClick
+        TabOrder = 7
+      end
+      object CopyFileToFolderLbl: TLabel
+        Left = 112
+        Height = 17
+        Top = 453
+        Width = 108
+        Anchors = [akLeft, akBottom]
+        Caption = 'No To folder yet'
+        ParentColor = False
+      end
+      object CopyFileToFolderBtn: TButton
+        Left = 2
+        Height = 25
+        Top = 445
+        Width = 96
+        Anchors = [akLeft, akBottom]
+        Caption = 'Set To Folder'
+        OnClick = CopyFileToFolderBtnClick
+        TabOrder = 8
+      end
+      object CopyFileDaysEdt: TEdit
+        Left = 560
+        Height = 25
+        Hint = 'Newer Than {x} Days. Switch of with 0.'
+        Top = 8
+        Width = 56
+        AutoSize = False
+        NumbersOnly = True
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 9
+        Text = '90'
+      end
+      object CopyFilesBtn: TButton
+        Left = 584
+        Height = 25
+        Top = 557
+        Width = 83
+        Anchors = [akRight, akBottom]
+        Caption = 'Copy Files'
+        OnClick = CopyFilesBtnClick
+        TabOrder = 10
+      end
+      object CopyFileOverwrite: TCheckBox
+        Left = 2
+        Height = 23
+        Top = 472
+        Width = 201
+        Caption = 'Overwrite Destination File'
+        TabOrder = 11
+      end
+      object CopyFilePreservetime: TCheckBox
+        Left = 2
+        Height = 23
+        Top = 496
+        Width = 121
+        Caption = 'Preserve Time'
+        Checked = True
+        State = cbChecked
+        TabOrder = 12
+      end
+      object CopyFileFilenameStructureEdt: TEdit
+        Left = 491
+        Height = 25
+        Hint = 'Keys to use [topmostfolder], [month:mmm]'
+        Top = 480
+        Width = 208
+        Anchors = [akRight, akBottom]
+        AutoSize = False
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 13
+      end
+    end
   end
   object SelectDirectoryDialog1: TSelectDirectoryDialog
     Left = 192
