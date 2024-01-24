@@ -552,13 +552,13 @@ var
   i: integer;
 begin
      Result := false;
-     if CopyFileStringGrid.RowCount = 1 then
+     If progressbar = true then
      begin
-       If progressbar = true then
+       if CopyFileStringGrid.RowCount = 1 then
        begin
          CopyFileStatusLbl.Caption := 'Status: Nothing to Copy';
+         exit;
        end;
-       exit;
      end;
      If progressbar = true then
      begin
@@ -579,7 +579,6 @@ begin
      try
        for i := 1 to CopyFileStringGrid.RowCount -1 do
        begin
-  //       showmessage(CopyFileStringGrid.Cells[0,i]);
          If fileexists(CopyFileStringGrid.Cells[0,i]) then
          begin
             fromfile:=SysToUTF8(CopyFileStringGrid.Cells[0,i]);
@@ -594,7 +593,6 @@ begin
               tofile := stringReplace(tofile , '[topmostfolder]', topmostfolder, [rfIgnoreCase]);
               tofile := stringReplace(tofile , '[month:mmm]', FormatDateTime('mmm',Now), [rfIgnoreCase]);
             end;
-            showmessage(tofile);
             tofile:=SysToUTF8(tofile);
             tofile:=UTF8ToCP866(tofile);
             try
@@ -602,7 +600,6 @@ begin
               begin
                   CreateDir(ExtractFilePath(tofile));
               end;
-  //            showmessage(CopyFileStringGrid.Cells[0,i] + '**' + tofile);
               if (CopyFilePreservetime.checked = true) and (CopyFileOverwrite.checked = true) then
                 ok := CopyFile(fromfile, tofile, [cffPreserveTime,cffOverwriteFile])
               else if (CopyFilePreservetime.checked = true) then
@@ -694,45 +691,70 @@ begin
                   else
                   begin
                       logdata.Add(datetimetostr(now) + ':' + inifilename + ' successfully loaded');
-                      try
+                      if DirectoryLbl.Caption <> 'Nothing selected.' then
+                      begin
+                        try
                               getfilesinfolder(DirectoryLbl.Caption,DaysEdt.Text, SearchMaskEdit.Text, IncludeSubFolderCheck.Checked , False);
                               if StringGrid1.Rowcount = 1 then
                               begin
                       	        logdata.Add(datetimetostr(now) + ':' + inifilename + ' no files to zip');
                                 logdata.SaveToFile(logfilepath);
-                                Application.Terminate;
                               end
                               else
                               begin
-                                  if zipfileswithruncheck.checked then
-                                  begin
-                                    zipfiles(includeTrailingPathDelimiter(ToFolderLbl.Caption) + FormatDateTime('yyyymmddhhmm',now) + '.zip',False);
-                                  end;
-                                  if deletefileswithruncheck.checked then
-                                  begin
-                                    Deleteselectedfiles(False);
-                                  end;
+                                if zipfileswithruncheck.checked then
+                                begin
+                                  zipfiles(includeTrailingPathDelimiter(ToFolderLbl.Caption) + FormatDateTime('yyyymmddhhmm',now) + '.zip',False);
+                                end;
+                                if deletefileswithruncheck.checked then
+                                begin
+                                  Deleteselectedfiles(False);
+                                end;
                                 if deleteemptyfolderscheck.checked then
                                 begin
                                      deleteemptydirectories(DirectoryLbl.Caption, False);
                                 end;
-                                logdata.Add(datetimetostr(now) + ':' + inifilename + ' Process completed');
+                                logdata.Add(datetimetostr(now) + ':' + inifilename + ' Zip Process completed');
                                 logdata.SaveToFile(logfilepath);
-                                Application.Terminate;
                               end;
-                      except
-                        on E: Exception do
-                        begin
-                          logdata.Add(datetimetostr(now) + ':' + inifilename + ' Process failed ->' + E.Message);
-                          logdata.SaveToFile(logfilepath);
-                          Application.Terminate;
+                        except
+                          on E: Exception do
+                          begin
+                            logdata.Add(datetimetostr(now) + ':' + inifilename + ' Zip Process failed ->' + E.Message);
+                            logdata.SaveToFile(logfilepath);
+                          end;
                         end;
                       end;
+                      if CopyFileDirectoryLbl.Caption <> 'Nothing selected.' then
+                      begin
+                        copyfilesgetfilesinfolder(CopyFileDirectoryLbl.Caption, CopyFileDaysEdt.Text, CopyFilesSearchMaskEdit.text,
+                             CopyFileIncludeSubFolderCheck.checked, OnlyNewestFileCheck.checked, False);
+                        if CopyFileStringGrid.Rowcount = 1 then
+                        begin
+                      	  logdata.Add(datetimetostr(now) + ':' + inifilename + ' no files to copy');
+                          logdata.SaveToFile(logfilepath);
+                        end
+                        else
+                        begin
+                          if CopyListofFiles(false) = false then
+                          begin
+                            logdata.Add(datetimetostr(now) + ':' + inifilename + ' Copy Process failed');
+                            logdata.SaveToFile(logfilepath);
+                          end
+                          else
+                          begin
+                            logdata.Add(datetimetostr(now) + ':' + inifilename + ' Copy Process completed');
+                            logdata.SaveToFile(logfilepath);
+                          end;
+
+                        end;
+                      end;
+                      Application.Terminate;
                   end;
               end
               else
               begin
-                  logdata.Add(datetimetostr(now) + ':(' + ParamStr(1) + ') file not found');
+                  logdata.Add(datetimetostr(now) + ':(' + ParamStr(1) + ') INI file not found');
                   logdata.SaveToFile(logfilepath);
                   Application.Terminate;
               end;
