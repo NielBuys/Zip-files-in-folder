@@ -8,7 +8,7 @@
         <CompatibilityMode Value="True"/>
       </Flags>
       <SessionStorage Value="InProjectDir"/>
-      <Title Value="Zip files in Folder"/>
+      <Title Value="NComp File Toolbox"/>
       <ResourceType Value="res"/>
       <UseXPManifest Value="True"/>
       <Icon Value="0"/>
@@ -18,9 +18,8 @@
     </i18n>
     <VersionInfo>
       <UseVersionInfo Value="True"/>
-      <MinorVersionNr Value="1"/>
-      <BuildNr Value="5"/>
-      <StringTable CompanyName="ncomp.co.za" FileDescription="Zip Files in Folder, ncomp.co.za tool" ProductName="Zip Files in Folder"/>
+      <MinorVersionNr Value="2"/>
+      <StringTable CompanyName="ncomp.co.za" FileDescription="NComp File Toolbox" ProductName="NComp File Toolbox"/>
     </VersionInfo>
     <BuildModes Count="1">
       <Item1 Name="Default" Default="True"/>

@@ -13,7 +13,7 @@ uses
 {$R *.res}
 
 begin
-  Application.Title:='Zip files in Folder';
+  Application.Title:='NComp File Toolbox';
   RequireDerivedFormResource:=True;
   Application.Initialize;
   Application.CreateForm(Tmainfrm, mainfrm);

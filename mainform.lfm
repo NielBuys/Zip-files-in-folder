@@ -1,9 +1,9 @@
 object mainfrm: Tmainfrm
-  Left = 1041
+  Left = 852
   Height = 661
-  Top = 30
+  Top = 53
   Width = 733
-  Caption = 'Zip Files in Folder'
+  Caption = 'NComp File Toolbox'
   ClientHeight = 661
   ClientWidth = 733
   Position = poScreenCenter
@@ -26,7 +26,7 @@ object mainfrm: Tmainfrm
     TabIndex = 1
     TabOrder = 1
     object ZipFilesinFolderSheet: TTabSheet
-      Caption = 'Zip files in folder'
+      Caption = 'Zip files in Folder'
       ClientHeight = 585
       ClientWidth = 705
       object SearchMaskEdit: TEdit
@@ -241,15 +241,18 @@ object mainfrm: Tmainfrm
       end
     end
     object CopyFilesSheet: TTabSheet
-      Caption = 'Copy File'
+      Caption = 'Copy Folder'
       ClientHeight = 585
       ClientWidth = 705
       object CopyFilesSearchMaskEdit: TEdit
-        Left = 8
+        Left = 0
         Height = 25
+        Hint = 'Search Mask Example "*.txt;*.csv"'
         Top = 8
         Width = 112
         AutoSize = False
+        ParentShowHint = False
+        ShowHint = True
         TabOrder = 0
         Text = '*'
       end
@@ -264,10 +267,10 @@ object mainfrm: Tmainfrm
         TabOrder = 1
       end
       object CopyFileStringGrid: TStringGrid
-        Left = 2
+        Left = 0
         Height = 381
         Top = 64
-        Width = 697
+        Width = 699
         Anchors = [akTop, akLeft, akRight, akBottom]
         ColCount = 3
         Columns = <        
@@ -358,16 +361,16 @@ object mainfrm: Tmainfrm
         TabOrder = 7
       end
       object CopyFileToFolderLbl: TLabel
-        Left = 112
+        Left = 104
         Height = 17
-        Top = 453
+        Top = 445
         Width = 108
         Anchors = [akLeft, akBottom]
         Caption = 'No To folder yet'
         ParentColor = False
       end
       object CopyFileToFolderBtn: TButton
-        Left = 2
+        Left = 0
         Height = 25
         Top = 445
         Width = 96
@@ -400,17 +403,17 @@ object mainfrm: Tmainfrm
         TabOrder = 10
       end
       object CopyFileOverwrite: TCheckBox
-        Left = 2
+        Left = 0
         Height = 23
-        Top = 472
+        Top = 476
         Width = 201
         Caption = 'Overwrite Destination File'
         TabOrder = 11
       end
       object CopyFilePreservetime: TCheckBox
-        Left = 2
+        Left = 0
         Height = 23
-        Top = 496
+        Top = 497
         Width = 121
         Caption = 'Preserve Time'
         Checked = True
@@ -420,7 +423,7 @@ object mainfrm: Tmainfrm
       object CopyFileFilenameStructureEdt: TEdit
         Left = 491
         Height = 25
-        Hint = 'Keys to use [topmostfolder], [month:mmm]'
+        Hint = 'Destination filename: Keep empty if filename should stay unchanged. Keys to use [topmostfolder], [month:mmm]'
         Top = 480
         Width = 208
         Anchors = [akRight, akBottom]
