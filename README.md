@@ -1,6 +1,9 @@
-# Zip-files-in-folder
+# NComp File Toolbox
 
-Small Open Source tool written for my office. It Compress the files (Recursive) in the selected folder older than the specified days, and then delete the files after the compress. The tool is used to backup and delete the older auto generated files in the specified folder.<br>
+Small Open Source tool written for my office. It have 2 functions.
+
+1. First function Compress the files (Recursive) in the selected folder older than the specified days, and then delete the files after the compress. The tool is used to backup and delete the older auto generated files in the specified folder. Deleting empty folders also.<br>
+2. Second function copy only the newest file in the folders (Recursive). Save the Newest file as a Monthly Copy in a destination folder. Name of file is renamed to the top most folder name and the month. To keep monthly copy's of backups for a year.<br>
 <br>
 Tool was written in Lazarus.<br>
 <br>
